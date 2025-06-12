@@ -1,5 +1,8 @@
 import Mustache from "mustache";
 import fs from "fs/promises";
+import { name } from "mustache";
+import { render } from "mustache";
+import { title } from "process";
 
 test("menggunakan mustache", () => {
   const data = Mustache.render("Hello {{name}}", { name: "maulana" });
@@ -78,4 +81,27 @@ test("Mustache List object", async () => {
   expect(data).toContain("maulana");
   expect(data).toContain("asyifa");
   expect(data).toContain("100");
+});
+test("Mustache Function", async () => {
+  const parameter = {
+    name: "maulana",
+    upper: () => {
+      return (text, render) => {
+        return render(text).toUpperCase();
+      };
+    },
+  };
+
+  const helloTemplate = await fs.readFile("./templates/students.mustache").then((data) => data.toString());
+
+  const data = Mustache.render("Hello {{# upper}}{{name}}{{/ upper }}", parameter);
+  console.info(data);
+  expect(data).toBe("Hello MAULANA");
+});
+test("Mustache Comment", async () => {
+  const helloTemplate = await fs.readFile("./templates/comment.mustache").then((data) => data.toString());
+
+  const data = Mustache.render(helloTemplate, { title: "Belajar Mustache" });
+  console.info(data);
+  expect(data).toContain("Belajar Mustache");
 });
