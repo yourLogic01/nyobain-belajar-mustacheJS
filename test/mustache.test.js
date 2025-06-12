@@ -56,3 +56,26 @@ test("Mustache inverted section data", async () => {
   console.info(data);
   expect(data).toContain("Hello Guest");
 });
+test("Mustache List", async () => {
+  const helloTemplate = await fs.readFile("./templates/hobbies.mustache").then((data) => data.toString());
+
+  const data = Mustache.render(helloTemplate, { hobbies: ["coding", "reading", "gaming"] });
+  console.info(data);
+  expect(data).toContain("coding");
+  expect(data).toContain("reading");
+  expect(data).toContain("gaming");
+});
+test("Mustache List object", async () => {
+  const helloTemplate = await fs.readFile("./templates/students.mustache").then((data) => data.toString());
+
+  const data = Mustache.render(helloTemplate, {
+    students: [
+      { name: "maulana", value: 100 },
+      { name: "asyifa", value: 100 },
+    ],
+  });
+  console.info(data);
+  expect(data).toContain("maulana");
+  expect(data).toContain("asyifa");
+  expect(data).toContain("100");
+});
