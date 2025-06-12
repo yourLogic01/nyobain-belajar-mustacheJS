@@ -28,3 +28,17 @@ test("Mustache file", async () => {
   console.info(data);
   expect(data).toContain("Belajar Mustache");
 });
+test("Mustache section not show", async () => {
+  const helloTemplate = await fs.readFile("./templates/person.mustache").then((data) => data.toString());
+
+  const data = Mustache.render(helloTemplate, {});
+  console.info(data);
+  expect(data).not.toContain("Hello Person");
+});
+test("Mustache section show", async () => {
+  const helloTemplate = await fs.readFile("./templates/person.mustache").then((data) => data.toString());
+
+  const data = Mustache.render(helloTemplate, { person: { name: "maulana" } });
+  console.info(data);
+  expect(data).toContain("Hello Person");
+});
