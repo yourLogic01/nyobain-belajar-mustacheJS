@@ -7,7 +7,10 @@
 </head>
 <body>
     {{# person }}
-        Hello Person {{ name }}
+        Hello Person {{ name }}!
+    {{/ person }}
+    {{^ person }}
+        Hello Guest
     {{/ person }}
 </body>
 </html>
