@@ -1,0 +1,30 @@
+import Mustache from "mustache";
+import fs from "fs/promises";
+
+test("menggunakan mustache", () => {
+  const data = Mustache.render("Hello {{name}}", { name: "maulana" });
+  expect(data).toBe("Hello maulana");
+});
+
+test("Melakukan compile", () => {
+  Mustache.parse("Hello {{name}}");
+
+  const data = Mustache.render("Hello {{name}}", { name: "maulana" });
+  expect(data).toBe("Hello maulana");
+});
+test("tags", () => {
+  const data = Mustache.render("Hello {{name}}, my hobby is {{{ hobby }}}", { name: "maulana", hobby: "<b>coding</b>" });
+  expect(data).toBe("Hello maulana, my hobby is <b>coding</b>");
+});
+
+test("nested object", () => {
+  const data = Mustache.render("Hello {{person.name}}", { person: { name: "maulana" } });
+  expect(data).toBe("Hello maulana");
+});
+test("Mustache file", async () => {
+  const helloTemplate = await fs.readFile("./templates/hello.mustache").then((data) => data.toString());
+
+  const data = Mustache.render(helloTemplate, { title: "Belajar Mustache" });
+  console.info(data);
+  expect(data).toContain("Belajar Mustache");
+});
